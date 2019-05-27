@@ -1,0 +1,61 @@
+server:
+  port: 8090
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://192.168.116.131:3306/aws-assignment
+    username: root
+    password: 123456
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20f
+  kafka:
+    bootstrap-servers: 192.168.116.132:9092,192.168.116.133:9092,192.168.116.135:9098
+    producer:
+      retries: 0
+      batch-size: 12800
+      buffer-memory: 102400
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: kafka-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 20000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 3
+  data:
+    cassandra:
+      keyspace-name: cas_testspace
+      # cluster-name: my-cluster
+      contact-points: 192.168.116.132
+      port: 9042
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.events.domain
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
+defined:
+    kafka:
+        topic: Test-Springboot-Topic
